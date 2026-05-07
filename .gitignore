@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+data/input/*.pdf
+data/input/*.png
+data/output/*
+data/demo/*.pdf
+!data/input/.gitkeep
+!data/output/.gitkeep
+!data/demo/.gitkeep
