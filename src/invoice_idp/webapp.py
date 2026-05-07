@@ -44,7 +44,7 @@ WEBAPP_HTML = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Invoice IDP OpenAI App</title>
+    <title>InvoiceVision IDP</title>
   <style>
     :root {
       color-scheme: light;
@@ -142,7 +142,7 @@ WEBAPP_HTML = """<!doctype html>
   <main class="shell">
     <header>
       <div>
-        <h1>Invoice IDP OpenAI App</h1>
+        <h1>InvoiceVision IDP</h1>
         <div class="subtle">Upload a PDF invoice. OpenAI reads page images, then Python validates totals and exports CSV/XLSX.</div>
       </div>
       <div class="statusbar">
@@ -247,6 +247,42 @@ WEBAPP_HTML = """<!doctype html>
         runButton.disabled = false;
       }
     });
+
+    const demoPayload = {
+      status: 'OK',
+      invoice: {
+        file_name: 'supplier-invoice-mixed-layout.pdf',
+        supplier: 'Northline Office Supplies',
+        invoice_number: 'INV-2026-0428',
+        invoice_date: '2026-04-28',
+        subtotal_ht: 1240.00,
+        vat_rate: 20.00,
+        vat_amount: 248.00,
+        total_ttc: 1488.00,
+        currency: 'EUR',
+        extraction_method: 'openai_vision',
+        confidence: 0.96,
+        missing_fields: []
+      },
+      anomalies: [],
+      openai: {
+        model: 'gpt-5-mini',
+        pages_sent: 1
+      },
+      exports: {
+        invoices_csv: 'data/output/invoices.csv',
+        invoices_xlsx: 'data/output/invoices.xlsx',
+        anomalies_csv: 'data/output/anomalies.csv',
+        anomalies_xlsx: 'data/output/anomalies.xlsx',
+        summary_json: 'data/output/summary.json'
+      }
+    };
+
+    if (new URLSearchParams(window.location.search).get('demo') === '1') {
+      render(demoPayload);
+      message.textContent = 'Demo invoice extracted.';
+      apiStatus.textContent = 'service: online';
+    }
 
     function render(payload) {
       const invoice = payload.invoice || {};

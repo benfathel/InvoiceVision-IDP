@@ -4,6 +4,8 @@ InvoiceVision IDP is a local n8n + OpenAI + Python tool for extracting, validati
 
 n8n orchestrates the workflow: PDF upload, structured LLM extraction, business validation, and Excel/CSV export. Python supports PDF rendering, deterministic checks, and exports.
 
+![InvoiceVision IDP web application screenshot](docs/assets/invoicevision-screenshot.png)
+
 Note: this project does not use UiPath. If a UiPath variant is added later, it must be clearly labeled `UiPath Community project`.
 
 ## Architecture
@@ -77,7 +79,7 @@ Workflow source:
 n8n/workflows/invoice_idp_upload_workflow.json
 ```
 
-Workflow dans n8n:
+Workflow in n8n:
 
 ```text
 Pxkz5MHhdqViFi2v

@@ -59,7 +59,7 @@ class ServiceEndpointTests(unittest.TestCase):
             response = client.get("/app")
 
             self.assertEqual(response.status_code, 200)
-            self.assertIn("Invoice IDP OpenAI App", response.text)
+            self.assertIn("InvoiceVision IDP", response.text)
 
     def test_ocr_and_validate_export_endpoints(self):
         with tempfile.TemporaryDirectory() as tmp:
