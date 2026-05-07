@@ -1,8 +1,8 @@
-# Mini-projet RPA / IDP - Extraction intelligente de factures PDF
+# InvoiceVision IDP
 
-Projet local n8n + OpenAI + Python pour traiter des factures PDF de formats variables.
+InvoiceVision IDP is a local n8n + OpenAI + Python tool for extracting, validating, and exporting invoice data from variable-format PDF invoices.
 
-n8n orchestre le workflow: upload PDF, OCR, extraction LLM structuree, validation metier, export Excel/CSV. Python reste en support pour l'OCR, les controles deterministes et les exports.
+n8n orchestre le workflow: upload PDF, extraction LLM structuree, validation metier, export Excel/CSV. Python reste en support pour le rendu PDF, les controles deterministes et les exports.
 
 Note: ce projet n'utilise pas UiPath. Si une variante UiPath est ajoutee plus tard, elle devra etre marquee clairement `UiPath Community project`.
 
