@@ -71,16 +71,16 @@ def draw_logo(draw: ImageDraw.ImageDraw) -> None:
 
 
 def draw_header(draw: ImageDraw.ImageDraw, title_font: ImageFont.ImageFont, heading_font: ImageFont.ImageFont) -> None:
-    draw.text((255, 86), "FACTURE / INVOICE", fill="#253047", font=title_font)
+    draw.text((255, 86), "INVOICE", fill="#253047", font=title_font)
     draw.text((705, 162), "No: INV-MESS-2026-077", fill="#5b1a18", font=heading_font)
     draw.text((705, 214), "Date: 2026-05-06", fill="#4a5b1a", font=heading_font)
-    draw.text((705, 266), "Devise: EUR", fill="#17324d", font=heading_font)
+    draw.text((705, 266), "Currency: EUR", fill="#17324d", font=heading_font)
     draw.line((255, 158, 650, 158), fill="#db6b2f", width=10)
 
 
 def draw_supplier_block(draw: ImageDraw.ImageDraw, body_font: ImageFont.ImageFont, tiny_font: ImageFont.ImageFont) -> None:
     draw.rounded_rectangle((90, 310, 555, 505), radius=18, fill="#fff3c7", outline="#d56b2f", width=5)
-    draw.text((115, 330), "Fournisseur", fill="#6a1b1a", font=body_font)
+    draw.text((115, 330), "Supplier", fill="#6a1b1a", font=body_font)
     draw.text((115, 382), "Supplier: Messy Color Labs SARL", fill="#2a3240", font=tiny_font)
     draw.text((115, 425), "VAT ID: FR-MESS-009812", fill="#2a3240", font=tiny_font)
     draw.text((115, 468), "12 Rue Pixelisee, Tunis", fill="#2a3240", font=tiny_font)
@@ -96,14 +96,14 @@ def draw_buyer_block(draw: ImageDraw.ImageDraw, body_font: ImageFont.ImageFont, 
 
 def draw_lines(draw: ImageDraw.ImageDraw, heading_font: ImageFont.ImageFont, body_font: ImageFont.ImageFont) -> None:
     y = 585
-    headers = [("Description", 110), ("Qty", 650), ("PU HT", 760), ("Montant", 940)]
+    headers = [("Description", 110), ("Qty", 650), ("Unit", 760), ("Amount", 940)]
     draw.rectangle((85, y, 1155, y + 58), fill="#224b60")
     for label, x in headers:
         draw.text((x, y + 10), label, fill="#fefae0", font=heading_font)
     rows = [
-        ("Audit OCR document couleur", "1", "420.00", "420.00"),
-        ("Extraction facture multi-format", "2", "315.00", "630.00"),
-        ("Validation TVA + rapport anomalie", "1", "250.00", "250.00"),
+        ("Color document analysis", "1", "420.00", "420.00"),
+        ("Multi-format invoice extraction", "2", "315.00", "630.00"),
+        ("VAT validation and anomaly report", "1", "250.00", "250.00"),
     ]
     y += 70
     for idx, row in enumerate(rows):
@@ -121,8 +121,8 @@ def draw_totals(draw: ImageDraw.ImageDraw, heading_font: ImageFont.ImageFont, bo
     draw.rounded_rectangle((x1, y1, x2, y2), radius=16, fill="#fff1e6", outline="#d62828", width=5)
     values = [
         ("Subtotal HT", "1300.00 EUR"),
-        ("TVA 20%", "260.00 EUR"),
-        ("Total TTC", "1560.00 EUR"),
+        ("VAT 20%", "260.00 EUR"),
+        ("Total", "1560.00 EUR"),
     ]
     y = y1 + 25
     for label, value in values:
@@ -137,7 +137,7 @@ def draw_noise_text(draw: ImageDraw.ImageDraw, tiny_font: ImageFont.ImageFont) -
         "Payment due: 30 days",
         "IBAN: FR76 3000 6000 0112 3456 7890 189",
         "Some footer text overlaps after bad scan",
-        "Remise: 0.00 EUR",
+        "Discount: 0.00 EUR",
     ]
     y = 1230
     for note in notes:

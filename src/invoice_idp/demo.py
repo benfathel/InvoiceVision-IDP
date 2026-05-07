@@ -17,8 +17,8 @@ def generate_demo_pdfs(output_dir: Path) -> List[Path]:
                 ("Invoice No", "FAC-2026-001"),
                 ("Date", "2026-04-30"),
                 ("Subtotal HT", "1000.00 EUR"),
-                ("TVA 20%", "200.00 EUR"),
-                ("Total TTC", "1200.00 EUR"),
+                ("VAT 20%", "200.00 EUR"),
+                ("Total", "1200.00 EUR"),
             ],
         ),
         (
@@ -28,8 +28,8 @@ def generate_demo_pdfs(output_dir: Path) -> List[Path]:
                 ("Invoice No", "FAC-2026-002"),
                 ("Date", "2026-04-29"),
                 ("Subtotal HT", "1000.00 EUR"),
-                ("TVA 20%", "180.00 EUR"),
-                ("Total TTC", "1180.00 EUR"),
+                ("VAT 20%", "180.00 EUR"),
+                ("Total", "1180.00 EUR"),
             ],
         ),
         (
@@ -39,8 +39,8 @@ def generate_demo_pdfs(output_dir: Path) -> List[Path]:
                 ("Invoice No", "FAC-2026-003"),
                 ("Date", "2026-04-28"),
                 ("Subtotal HT", "800.00 EUR"),
-                ("TVA 20%", "160.00 EUR"),
-                ("Total TTC", "900.00 EUR"),
+                ("VAT 20%", "160.00 EUR"),
+                ("Total", "900.00 EUR"),
             ],
         ),
         (
@@ -49,8 +49,8 @@ def generate_demo_pdfs(output_dir: Path) -> List[Path]:
                 ("Invoice No", "FAC-2026-004"),
                 ("Date", "2026-04-27"),
                 ("Subtotal HT", "500.00 EUR"),
-                ("TVA 20%", "100.00 EUR"),
-                ("Total TTC", "600.00 EUR"),
+                ("VAT 20%", "100.00 EUR"),
+                ("Total", "600.00 EUR"),
             ],
         ),
     ]
@@ -94,8 +94,8 @@ def _write_ocr_pdf(path: Path) -> Path:
         "Invoice No: OCR-2026-005",
         "Date: 2026-04-26",
         "Subtotal HT: 300.00 EUR",
-        "TVA 20%: 60.00 EUR",
-        "Total TTC: 360.00 EUR",
+        "VAT 20%: 60.00 EUR",
+        "Total: 360.00 EUR",
     ]
     image = Image.new("RGB", (1200, 1600), "white")
     draw = ImageDraw.Draw(image)
@@ -113,4 +113,3 @@ def _write_ocr_pdf(path: Path) -> Path:
     pdf.drawImage(ImageReader(image), 36, 72, width=width - 72, height=height - 144, preserveAspectRatio=True)
     pdf.save()
     return path
-

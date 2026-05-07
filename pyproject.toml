@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "invoice-idp"
 version = "0.1.0"
-description = "Mini projet RPA/IDP pour extraction et controle de factures PDF"
+description = "RPA/IDP mini-project for invoice PDF extraction and validation"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [

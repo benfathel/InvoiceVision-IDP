@@ -2,21 +2,21 @@
 
 InvoiceVision IDP is a local n8n + OpenAI + Python tool for extracting, validating, and exporting invoice data from variable-format PDF invoices.
 
-n8n orchestre le workflow: upload PDF, extraction LLM structuree, validation metier, export Excel/CSV. Python reste en support pour le rendu PDF, les controles deterministes et les exports.
+n8n orchestrates the workflow: PDF upload, structured LLM extraction, business validation, and Excel/CSV export. Python supports PDF rendering, deterministic checks, and exports.
 
-Note: ce projet n'utilise pas UiPath. Si une variante UiPath est ajoutee plus tard, elle devra etre marquee clairement `UiPath Community project`.
+Note: this project does not use UiPath. If a UiPath variant is added later, it must be clearly labeled `UiPath Community project`.
 
 ## Architecture
 
-- n8n Docker existant: `n8n-n8n` sur `http://localhost:5678`.
-- Webhook n8n: upload multipart du champ `invoice`.
-- Python local: `http://host.docker.internal:8010` depuis le container n8n.
-- OpenAI dans n8n: noeud `OpenAI Chat Model`, modele `gpt-5-mini`.
-- Extraction structuree: noeud n8n `Information Extractor`.
-- Validation Python: fournisseur, numero facture, date, Total HT, TVA, Total TTC, confiance LLM.
+- Existing n8n Docker container: `n8n-n8n` at `http://localhost:5678`.
+- n8n webhook: multipart upload field `invoice`.
+- Local Python service: `http://host.docker.internal:8010` from the n8n container.
+- OpenAI in n8n: `OpenAI Chat Model` node, model `gpt-5-mini`.
+- Structured extraction: n8n `Information Extractor` node.
+- Python validation: supplier, invoice number, date, subtotal, VAT, total, LLM confidence.
 - Exports: `invoices.csv`, `invoices.xlsx`, `anomalies.csv`, `anomalies.xlsx`, `summary.json`.
 
-## Installation Python
+## Python Installation
 
 ```bash
 python3 -m venv .venv
@@ -24,18 +24,18 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Verifier Tesseract:
+Check Tesseract:
 
 ```bash
 tesseract --version
 tesseract --list-langs
 ```
 
-Par defaut le projet utilise `eng`. Installer le pack `fra` pour `INVOICE_IDP_OCR_LANG=fra+eng`.
+The project uses `eng` by default. Install the `fra` language pack only if you want `INVOICE_IDP_OCR_LANG=fra+eng`.
 
 ## Service Python
 
-Demarrer le service local:
+Start the local service:
 
 ```bash
 PYTHONPATH=src python -m invoice_idp serve --host 0.0.0.0 --port 8010
@@ -44,16 +44,16 @@ PYTHONPATH=src python -m invoice_idp serve --host 0.0.0.0 --port 8010
 Endpoints:
 
 - `GET /health`
-- `GET /app`: application web locale.
-- `POST /web/process`: extraction OpenAI Vision only, validation et export.
-- `POST /web/process-local`: legacy local OCR/parser pour comparaison.
-- `POST /ocr`: champ multipart `invoice`, retourne `file_id`, `file_name`, `text`, `extraction_method`, `text_chars`.
-- `POST /validate-export`: recoit le JSON extrait par le LLM, valide et met a jour les exports.
-- `POST /process`: legacy, pipeline Python regex-only garde pour compatibilite.
+- `GET /app`: local web application.
+- `POST /web/process`: OpenAI Vision-only extraction, validation, and export.
+- `POST /web/process-local`: legacy local OCR/parser for comparison.
+- `POST /ocr`: multipart field `invoice`; returns `file_id`, `file_name`, `text`, `extraction_method`, `text_chars`.
+- `POST /validate-export`: receives LLM-extracted JSON, validates it, and updates exports.
+- `POST /process`: legacy Python regex-only pipeline kept for compatibility.
 
 ## Webapp OpenAI only
 
-Configurer la cle OpenAI dans le shell qui lance le service:
+Configure the OpenAI key in the shell that starts the service:
 
 ```bash
 export OPENAI_API_KEY="sk-..."
@@ -61,13 +61,13 @@ export OPENAI_INVOICE_MODEL="gpt-5-mini"
 PYTHONPATH=src python -m invoice_idp serve --host 0.0.0.0 --port 8010
 ```
 
-Ouvrir:
+Open:
 
 ```text
 http://localhost:8010/app
 ```
 
-Le PDF est rendu en images puis envoye a OpenAI via Responses API avec image input et JSON structure. Aucun OCR Tesseract n'est utilise pour `/web/process`.
+The PDF is rendered as images and sent to OpenAI through the Responses API with image input and structured JSON. Tesseract OCR is not used for `/web/process`.
 
 ## Workflow n8n AI
 
@@ -89,16 +89,16 @@ Flux:
 Webhook PDF -> HTTP /ocr -> Information Extractor -> OpenAI Chat Model -> HTTP /validate-export -> response JSON
 ```
 
-Avant activation:
+Before activation:
 
-1. Ouvrir n8n sur `http://localhost:5678`.
-2. Ouvrir le workflow `Invoice IDP - AI PDF Upload`.
-3. Configurer un credential OpenAI sur le noeud `OpenAI Invoice Model`.
-4. Demarrer le service Python local.
-5. Tester avec un PDF dans le champ multipart `invoice`.
-6. Activer seulement apres test.
+1. Open n8n at `http://localhost:5678`.
+2. Open the workflow `Invoice IDP - AI PDF Upload`.
+3. Configure an OpenAI credential on the `OpenAI Invoice Model` node.
+4. Start the local Python service.
+5. Test with a PDF in the multipart field `invoice`.
+6. Activate only after the test passes.
 
-URL active apres activation:
+Production webhook URL after activation:
 
 ```text
 http://localhost:5678/webhook/invoice-upload
@@ -106,13 +106,13 @@ http://localhost:5678/webhook/invoice-upload
 
 ## Demo CLI
 
-Generer des factures PDF demo:
+Generate demo PDF invoices:
 
 ```bash
 PYTHONPATH=src python -m invoice_idp generate-demo --output-dir data/input
 ```
 
-Pipeline legacy Python seul:
+Legacy Python-only pipeline:
 
 ```bash
 PYTHONPATH=src python -m invoice_idp process --input data/input --output-dir data/output
@@ -124,11 +124,11 @@ PYTHONPATH=src python -m invoice_idp process --input data/input --output-dir dat
 PYTHONPATH=src python -m unittest discover -s tests
 ```
 
-## Resultats attendus
+## Expected Results
 
-- Facture valide: statut `OK`.
-- TVA incorrecte: anomalie `vat_rate_match`.
-- Total incorrect: anomalie `total_match`.
-- Champ manquant: anomalie `required_field`.
-- Confiance LLM faible: anomalie `low_confidence`.
-- Validation humaine: ouvrir `data/output/anomalies.xlsx`.
+- Valid invoice: status `OK`.
+- Incorrect VAT: anomaly `vat_rate_match`.
+- Incorrect total: anomaly `total_match`.
+- Missing field: anomaly `required_field`.
+- Low LLM confidence: anomaly `low_confidence`.
+- Human review: open `data/output/anomalies.xlsx`.

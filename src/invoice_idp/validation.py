@@ -29,7 +29,7 @@ def validate_invoice(invoice: InvoiceData, tolerance: Decimal = DEFAULT_TOLERANC
                     expected_value="present",
                     severity="error",
                     rule="required_field",
-                    message=f"Champ obligatoire manquant: {field}",
+                    message=f"Required field missing: {field}",
                 )
             )
 
@@ -45,7 +45,7 @@ def validate_invoice(invoice: InvoiceData, tolerance: Decimal = DEFAULT_TOLERANC
                     expected_value=decimal_to_text(expected_total),
                     severity="error",
                     rule="total_match",
-                    message="Total TTC different de Total HT + TVA",
+                    message="Total differs from subtotal plus VAT",
                 )
             )
 
@@ -61,7 +61,7 @@ def validate_invoice(invoice: InvoiceData, tolerance: Decimal = DEFAULT_TOLERANC
                     expected_value=decimal_to_text(expected_vat),
                     severity="error",
                     rule="vat_rate_match",
-                    message="Montant TVA different de Total HT * taux TVA",
+                    message="VAT amount differs from subtotal times VAT rate",
                 )
             )
 
@@ -75,7 +75,7 @@ def validate_invoice(invoice: InvoiceData, tolerance: Decimal = DEFAULT_TOLERANC
                 expected_value=">= 0",
                 severity="error",
                 rule="positive_total",
-                message="Total TTC negatif",
+                message="Total is negative",
             )
         )
 
@@ -89,7 +89,7 @@ def validate_invoice(invoice: InvoiceData, tolerance: Decimal = DEFAULT_TOLERANC
                 expected_value=">= 0.70",
                 severity="warning",
                 rule="low_confidence",
-                message="Confiance LLM faible, validation humaine recommandee",
+                message="Low LLM confidence, human review recommended",
             )
         )
 
