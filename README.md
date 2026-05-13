@@ -1,3 +1,4 @@
+<img width="3428" height="2214" alt="CleanShot 2026-05-10 at 18 12 28@2x" src="https://github.com/user-attachments/assets/4ff5c5f9-8f14-4b74-bdcf-a360adde21c2" />
 # InvoiceVision IDP
 
 InvoiceVision IDP is a local n8n + OpenAI + Python tool for extracting, validating, and exporting invoice data from variable-format PDF invoices.
